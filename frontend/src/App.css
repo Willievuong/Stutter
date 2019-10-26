@@ -2,10 +2,10 @@ html,
 body{
   font-family: -apple-system, Lato,'Helvetica Neue',Arial,Helvetica,
   sans-serif;
-  background-color: #A6B1E1
+  background-color: #577eff
 }
 .container{
-  margin: 80px auto 0 auto;
+  margin: 20px auto 0 auto;
   max-width: 1200px;
 }
 .nav-container{

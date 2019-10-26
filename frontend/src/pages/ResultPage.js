@@ -17,7 +17,12 @@ class ResultPage extends Component {
 
     render() {
       return (
-        <h1>Result</h1>
+        <div style={{ display: 'flex', flexDirection:'column', alignItems: 'center', justifyContent: 'center'}}>
+            <h1 style={{ color: 'white', fontSize: 90 }}>Stutter</h1>
+            <h1 style={{flex: 1, color: 'white', marginTop: 35}}>
+                Your Result:
+            </h1>
+        </div>
       );
     }
   }
