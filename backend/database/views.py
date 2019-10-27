@@ -12,6 +12,7 @@ import boto3
 from botocore.exceptions import ClientError
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import FileUploadParser
+import os
 
 @api_view(['GET'])
 def default(request):
@@ -213,5 +214,8 @@ def SaveResponse(request, filename, format=None):
     serializer = UserResponseSerializer(data=answer)
     if serializer.is_valid(): 
         serializer.save() 
+
+        os.remove(title)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_4008_BAD_REQUEST)
