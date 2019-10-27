@@ -23,5 +23,5 @@ class UserResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserResponse
         fields = ('id', 'title', 'session_id', 'user_id', 'question_id', 'transcript', 
-        'bucket_url', 'time_completion')
+        'bucket_url', 'time_completion', 'facial_emotion', 'smile', 'keywords')
         read_only_fields = ['id']
