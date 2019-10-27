@@ -36,3 +36,4 @@ class UserResponse(models.Model):
     time_completion = models.IntegerField(default=0, null=True)
     facial_emotion = models.TextField(null=True)
     smile = models.BooleanField(null=True)
+    keywords_missed = models.TextField(null=True)
