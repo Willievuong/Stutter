@@ -225,7 +225,7 @@ def SaveResponse(request, filename, format=None):
     if serializer.is_valid(): 
         serializer.save() 
 
-        os.remove(title)
+        os.remove(mp4_title)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_4008_BAD_REQUEST)
