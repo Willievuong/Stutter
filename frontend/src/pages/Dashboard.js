@@ -40,7 +40,13 @@ function Session(props) {
   return (
     <div>
       <Paper className={classes.root}>
-        <Link to="/result" className={styles.linkStyle}>
+        <Link to={
+            {
+                pathname: "/result",
+                session: `${props.id}`,
+                done: true
+            }
+        } className={styles.linkStyle}>
           <div className={styles.containerStyle}>
             <Typography
               variant="h3"
@@ -55,7 +61,7 @@ function Session(props) {
                   ? `Finished Processing at ${props.time} PDT`
                   : "Results Processing"}
               </Typography>
-              {getPercentageScore(props.score)}
+              {/*getPercentageScore(props.score)*/}
             </div>
             {getLoadingIcon(props.status)}
           </div>
@@ -64,6 +70,7 @@ function Session(props) {
     </div>
   );
 }
+
 class Dashboard extends Component {
   state = {
     array: [0, 1, 2],
@@ -77,7 +84,7 @@ class Dashboard extends Component {
     time: ""
   };
   componentDidMount() {
-    setTimeout(() => this.getData(), 1000);
+    this.getData();
   }
   async getData() {
     const response = await Axios.get("http://83147b49.ngrok.io/session/");
@@ -121,8 +128,11 @@ class Dashboard extends Component {
     const keywords_used = ["b", "c", "d"];
     return (
       <React.Fragment>
-        <div style={{ textAlign: "center" }}>
-          <h1 style={{ color: "white", fontSize: 90 }}>Stutter</h1>
+        <div style={{ display: 'flex', flexDirection: 'column', textAlign: "center" }}>
+          <h1 style={{ color: "white", fontSize: 120, marginTop: 20 }}>Stutter.</h1>
+          <Link to="/" style={{ textDecoration: "underline" }}>
+              Return to the homepage
+          </Link>
           <h1
             style={{
               flex: 1,
@@ -138,7 +148,7 @@ class Dashboard extends Component {
         {Object.keys(this.state.collection).map((id, index) => (
           <Session
             key={index}
-            id={this.state.titles[index] + this.state.ids[index]}
+            id={this.state.ids[index]}
             status={this.state.loaded}
             time={this.state.time}
             score={this.calculateScore()}

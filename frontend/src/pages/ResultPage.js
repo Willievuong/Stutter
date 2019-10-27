@@ -22,8 +22,11 @@ class ResultPage extends Component {
       keywords: {},
       confidence: 0,
       accuracy: 0,
-      loading: false,
-      sessionID: null
+      loading: true,
+      sessionID: null,
+      faces: [],
+      keywordsMissed: [], 
+
     };
   }
   goBack() {
@@ -33,18 +36,38 @@ class ResultPage extends Component {
     redirect: false
   };
   componentDidMount() {
+    if(this.props.location.done){
+      this.setState({
+        loading: false
+      })
+    }
     this.getData();
   }
   //Axios call to retrieve user results
   async getData() {
+    console.log(this.props.location.session)
+    if(!this.props.location.session){
+      return;
+    }
+
     const obj = {
-      "session_id": 1, 
+      //"session_id": this.props.location.session, 
+      "session_id": 2,
     }
 
     var response = Axios.post(`http://83147b49.ngrok.io/getresponse/`, obj)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
+                var arrs = res.data
+                console.log(arrs);
+                arrs.map((keyword, index) => {
+                  this.setState((prevState, props) => {
+                      this.state.faces = prevState.faces.concat(arrs[index].face_emotion)
+                      this.state.keywordsMissed = prevState.keywordsMissed.concat(arrs[index].keywords_missed)
+                  })
+                })
+                console.log(this.state)
                 //const collection = await response.data;
                 //const keywords = collection.address;
                 //const confidence = collection.id;
@@ -263,18 +286,21 @@ class ResultPage extends Component {
     if(!this.state.loading){
       return (
         <div className={styles.container} style={{}}>
-          <h1 style={{ marginTop: 20, color: 'white', fontSize: 120 }}>Stutter</h1>
+          <h1 style={{ marginTop: 20, color: 'white', fontSize: 120 }}>Stutter.</h1>
+          <Link to="/" style={{ textDecoration: "underline" }}>
+              Return to the homepage
+          </Link>
           <h1 style={{ flex: 1, color: "white", fontSize: 40, marginTop: 5, marginBottom: 20 }}>
             Your Result:
           </h1>
           <div style={{ display: 'flex', flexDirection: 'row'}}>
-              <SimpleCard icon="SAD" description=""/>
-              <SimpleCard conf={0.9} description=""/>
-              <SimpleCard corrPerc={0.75} description=""/>
-              <SimpleCard inCorrPerc={0.25} description=""/>
+              <SimpleCard icon="UNKNOWN" description=""/>
+              <SimpleCard conf={0.65} description=""/>
+              <SimpleCard corrPerc={0.68} description=""/>
+              <SimpleCard inCorrPerc={0.32} description=""/>
           </div>
           {/*this.printBody()*/}
-          <Slides />
+          <Slides faces={this.state.faces} keywordsMissed={this.state.keywordsMissed}/>
         </div>
       );
     } else {

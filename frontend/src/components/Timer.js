@@ -9,7 +9,7 @@ import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import MediaCapturer from 'react-multimedia-capture';
 
 
-const MAX_TIME = 10;
+const MAX_TIME = 60;
 
 class Timer extends Component {
     constructor(props) {

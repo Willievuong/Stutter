@@ -83,7 +83,7 @@ class Home extends Component {
         
       return (
         <div style={{ display: 'flex', flexDirection:'column', alignItems: 'center', justifyContent: 'center'}}>
-            <h1 style={{ marginTop: 20, color: 'white', fontSize: 120 }}>Stutter</h1>
+            <h1 style={{ marginTop: 20, color: 'white', fontSize: 120 }}>Stutter.</h1>
             <div style={{ display: 'flex', flexDirection: 'row'}}>
                 <Link to='/video' params={{ sessionID: this.state.sessionID }}>
                     <IconButton style={{ marginLeft: '-5%', marginTop: '10%', marginBottom: 15 }} onMouseOver={this.handleOver}>
@@ -101,7 +101,7 @@ class Home extends Component {
                 </Link>
             </div>
             <h1 style={{flex: 1, color: 'white', marginTop: '2%'}}>
-                Interview Prep.
+                Hack the Duck. Now.
             </h1>
         </div>
       );
