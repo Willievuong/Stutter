@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.buttonStyle {
+  width: 150;
+  height: 150;
+  color: "white";
+  margin-top: 35;
+}
+.loadingStyle {
+  flex: 1;
+  color: white;
+  margin-top: 35;
+  display: inline-block;
+  text-align: center;
+}
+.headingStyle {
+  flex: 1;
+  color: white;
+  margin-top: 35;
+  margin-right: 5vw;
+  margin-left: 5vw;
+  display: inline;
+}
+.articleStyle {
+  flex: 1;
+  display: inline;
+  flex-direction: column;
+}
+.emoticonStyle {
+  width: 30% !important;
+  height: auto !important;
+  margin: 3rem;
+}
+
