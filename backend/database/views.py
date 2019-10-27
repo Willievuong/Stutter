@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import *
 from .models import * 
+import base64 
 
 @api_view(['GET'])
 def default(request):
@@ -145,3 +146,39 @@ def UserResponseDetailsView(request, pk):
     elif request.method == 'DELETE':
         query.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+def SaveSession(request):
+    # Hard Coded Data 
+    user_id = 0 
+    title = "Session"
+    no_question = 3
+
+    request.data['user_id'] = user_id
+    request.data['title'] = title
+    request.data['no_question'] = no_question
+
+    serializer = SessionSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['POST'])
+# def SaveResponse(request): 
+#     # Accessing the S3 Data
+#     s3 = boto3.resource('s3')
+#     for bucket in s3.buckets.all():
+#         if bucket.name == 'stutter':
+#             my_bucket = bucket
+
+#     # Converting B64 Encoding to Mp4
+#     data = request.data['video']
+#     decoded_data = base64.base64decode(data)
+
+
+
+#     response = s3.Bucket('stutter').put_object(Key='mooovie.mp4', Body=data)
+ 

@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
+    "memoize-one": "^5.1.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-multimedia-capture": "^1.2.4",
@@ -14,7 +15,8 @@
     "react-video-recorder": "^3.15.0",
     "react-webcam": "^3.1.1",
     "seven-segment-display": "^0.2.0",
-    "styled-components": "^4.4.0"
+    "styled-components": "^4.4.0",
+    "video-react": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",

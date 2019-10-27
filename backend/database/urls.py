@@ -12,6 +12,7 @@ urlpatterns = {
     url(r'^question/(?P<pk>[0-9]+)/$', QuestionDetailsView, name="question_details"),
     url(r'^response/$', UserResponseCreateView, name="response"),
     url(r'^response/(?P<pk>[0-9]+)/$', UserResponseDetailsView, name="response_details"),
+    url(r'^savesession/$', SaveSession, name="save_session"),
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
