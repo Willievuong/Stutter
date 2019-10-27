@@ -23,7 +23,7 @@ while True:
             if userResponse['facial_emotion'] == None:
                 video_url = userResponse['bucket_url']
                 video_format = "mp4"
-                keyword = keyword_list[userResponse['question_id']-1]
+                keyword = keyword_list[int(userResponse['question_id'])-1]
                 bucketName = "stutter"
                 videoName = userResponse['title']
                 roleArn = "arn:aws:iam::319974506975:role/RekAdmin"
