@@ -43,7 +43,7 @@ while True:
 
                 response = requests.put(backend_url+userResponse['user_id']+'/', json=userResponse)
                 print(response)
-    time.sleep(10)
+    time.sleep(300)
     
 
    

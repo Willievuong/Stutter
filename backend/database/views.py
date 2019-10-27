@@ -13,6 +13,9 @@ from botocore.exceptions import ClientError
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import FileUploadParser
 import os
+import ffmpeg
+import json
+
 
 @api_view(['GET'])
 def default(request):
@@ -145,6 +148,8 @@ def UserResponseDetailsView(request, pk):
         serializer = UserResponseSerializer(query)
         return Response(serializer.data)
     elif request.method == 'PUT':
+        keyword = request.data['keywords_missed']
+        request.data['keywords_missed'] = json.dumps(keyword)
         serializer = UserResponseSerializer(query, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -177,7 +182,8 @@ def SaveSession(request):
 @parser_classes([FileUploadParser])
 def SaveResponse(request, filename, format=None):
     title = request.META['HTTP_TITLE']
-    title = title + ".mp4"
+    mp4_title = title + ".mp4"
+    title = title + ".webm"
     session_id = request.META['HTTP_SESSIONID']
     question_id = request.META['HTTP_QUESTIONID']
 
@@ -187,12 +193,16 @@ def SaveResponse(request, filename, format=None):
         for chunk in data.chunks():
             destination.write(chunk)
 
+    stream = ffmpeg.input(title)
+    stream = ffmpeg.output(stream, mp4_title)
+    ffmpeg.run(stream)
+
     # Accessing the S3 Data
     s3 = boto3.resource('s3')
     my_bucket = s3.Bucket('stutter')
    
     # # Creating writeable video and write the decoding result
-    video_result = open(title, 'rb')
+    video_result = open(mp4_title, 'rb')
    
     response = my_bucket.put_object(Key=title, Body=video_result)
 
@@ -219,3 +229,18 @@ def SaveResponse(request, filename, format=None):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_4008_BAD_REQUEST)
+
+@api_view(['POST'])
+def GetSession(request):
+    '''
+        Return all user response with a corresponding session id 
+    '''
+    
+    serializer = SessionSerializer(data=request.data)
+    
+    
+    if serializer.is_valid():
+        serializer.save()
+    
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

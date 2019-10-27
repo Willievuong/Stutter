@@ -3,7 +3,7 @@ import time
 import boto3
 import urllib.request, json
 import random
-
+import secrets
 
 """
     Function: video_to_text
@@ -16,8 +16,9 @@ def video_to_text(video_url, video_format):
     # Set params for API Call
     transcribe = boto3.client('transcribe')
     job_name = video_url.split("amazonaws.com/")[1]
+    job_name = job_name + str(secrets.token_urlsafe(4))
     job_uri = video_url
-    
+    print(video_format)
     # Start transcription job
     transcribe.start_transcription_job(
         TranscriptionJobName=job_name,
@@ -32,6 +33,7 @@ def video_to_text(video_url, video_format):
             break
     
     # Extract transcript from API response
+    print(status)
     transcript_file_url = status['TranscriptionJob']['Transcript']['TranscriptFileUri']
     response = urllib.request.urlopen(transcript_file_url)
     data = json.loads(response.read())

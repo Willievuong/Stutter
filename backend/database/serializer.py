@@ -16,12 +16,12 @@ class SessionSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ('id', 'title, date_created', 'user_id', 'answer')
+        fields = ('id', 'title, date_created', 'user_id', 'answer_keywords')
         read_only_fields = ['id']
 
 class UserResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserResponse
         fields = ('id', 'title', 'session_id', 'user_id', 'question_id', 'transcript', 
-        'bucket_url', 'time_completion', 'facial_emotion', 'smile', 'keywords')
+        'bucket_url', 'time_completion', 'facial_emotion', 'smile', 'keywords_missed')
         read_only_fields = ['id']
