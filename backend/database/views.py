@@ -166,19 +166,33 @@ def SaveSession(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# @api_view(['POST'])
-# def SaveResponse(request): 
-#     # Accessing the S3 Data
-#     s3 = boto3.resource('s3')
-#     for bucket in s3.buckets.all():
-#         if bucket.name == 'stutter':
-#             my_bucket = bucket
-
-#     # Converting B64 Encoding to Mp4
-#     data = request.data['video']
-#     decoded_data = base64.base64decode(data)
+@api_view(['POST'])
+def SaveResponse(request): 
+    # Accessing the S3 Data
+    s3 = boto3.resource('s3')
+    my_bucket = s3.Bucket('stutter')
+    
 
 
+    # for bucket in s3.buckets.all():
+    #     if bucket.name == 'stutter':
+    #         my_bucket = bucket
 
-#     response = s3.Bucket('stutter').put_object(Key='mooovie.mp4', Body=data)
- 
+    # Converting B64 Encoding to Mp4
+    data = request.data['video']
+    decoded_data = base64.base64decode(data)
+
+    response = my_bucket.put_object(Key='mooovie.mp4', Body=data)
+
+    # Concating the URL 
+    bucket_name = "stutter"
+    region = ".s3-us-west-1."
+    bucket_url = "https://"+ bucket_name + region + "amazonaws.com/"
+    
+    request.data['bucket_url'] = bucket_url
+
+    serializer = UserResponseSerializer(data=request.data)
+    if serializer.is_valid(): 
+        serializer.save() 
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
