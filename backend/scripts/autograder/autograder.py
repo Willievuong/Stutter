@@ -18,7 +18,6 @@ def video_to_text(video_url, video_format):
     job_name = video_url.split("amazonaws.com/")[1]
     job_name = job_name + str(secrets.token_urlsafe(4))
     job_uri = video_url
-    print(video_format)
     # Start transcription job
     transcribe.start_transcription_job(
         TranscriptionJobName=job_name,
