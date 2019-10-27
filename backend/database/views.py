@@ -1,11 +1,16 @@
 from django.shortcuts import render
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.decorators import parser_classes
 from rest_framework.response import Response
 from .serializer import *
 from .models import * 
 import base64 
+import logging
+import boto3
+from botocore.exceptions import ClientError
+from rest_framework.exceptions import ParseError
+from rest_framework.parsers import FileUploadParser
 
 @api_view(['GET'])
 def default(request):
@@ -151,7 +156,7 @@ def UserResponseDetailsView(request, pk):
 def SaveSession(request):
     # Hard Coded Data 
     user_id = 0 
-    title = "Session"
+    title = str(user_id) + "A"
     no_question = 3
 
     request.data['user_id'] = user_id
@@ -167,32 +172,54 @@ def SaveSession(request):
 
 
 @api_view(['POST'])
-def SaveResponse(request): 
-    # Accessing the S3 Data
-    s3 = boto3.resource('s3')
-    my_bucket = s3.Bucket('stutter')
+@parser_classes([FileUploadParser])
+def SaveResponse(request, filename, format=None):
+    # print(request.META['HTTP_SESSIONID'])
+    title = request.META['HTTP_TITLE']
+    title = title + ".mp4"
+    session_id = request.META['HTTP_SESSIONID']
+
+    data = request.data['file']
+
+    print(type(data))
+
+    # video_result = open(title, 'wb')
+    # video_result.write(data)
+
+    return Response("No")
+    # # Accessing the S3 Data
+    # s3 = boto3.resource('s3')
+    # my_bucket = s3.Bucket('stutter')
     
+    # # for bucket in s3.buckets.all():
+    # #     if bucket.name == 'stutter':
+    # #         my_bucket = bucket
 
+    # # Converting B64 Encoding to Mp4
+    # data = request.data['video']
+    # title = request.data['title'] + ".mp4"
+    # # decoded_data = base64.b64decode(data)
 
-    # for bucket in s3.buckets.all():
-    #     if bucket.name == 'stutter':
-    #         my_bucket = bucket
+    # # Creating writeable video and write the decoding result
+    # video_result = open(title, 'wb')
+    # video_result.write(data)
+    # # video_result.write(decoded_data)
 
-    # Converting B64 Encoding to Mp4
-    data = request.data['video']
-    decoded_data = base64.base64decode(data)
+    # # data = open(title, 'rb')
 
-    response = my_bucket.put_object(Key='mooovie.mp4', Body=data)
+    # # print(type(data))
 
-    # Concating the URL 
-    bucket_name = "stutter"
-    region = ".s3-us-west-1."
-    bucket_url = "https://"+ bucket_name + region + "amazonaws.com/"
+    # # response = my_bucket.put_object(Key=title, Body=data)
+
+    # # Concating the URL 
+    # bucket_name = "stutter"
+    # region = ".s3-us-west-1."
+    # bucket_url = "https://"+ bucket_name + region + "amazonaws.com/"
     
-    request.data['bucket_url'] = bucket_url
+    # request.data['bucket_url'] = bucket_url
 
-    serializer = UserResponseSerializer(data=request.data)
-    if serializer.is_valid(): 
-        serializer.save() 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # serializer = UserResponseSerializer(data=request.data)
+    # if serializer.is_valid(): 
+    #     serializer.save() 
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # return Response(serializer.errors, status=status.HTTP_4008_BAD_REQUEST)

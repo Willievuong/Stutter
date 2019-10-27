@@ -36,9 +36,10 @@ s3 = boto3.resource('s3')
 #         # for obj in bucket.objects.all():
 #         #     print(obj.id)
 
-# data = open('sample.mp4', 'rb')
+data = open('sample.mp4', 'rb')
+print(type(data))
 # # response = upload_file('sample.mp4', 'stutter', object_name="AnotherMonkey4.mp4")
 # response = s3.Bucket('stutter').put_object(Key='mooovie.mp4', Body=data)
 
-print(s3.attributes)
+# print(s3.attributes)
 

@@ -12,7 +12,7 @@ import random
     Description: Transcrip video to text
      
 """
-def video_to_mtext(video_url, video_format):
+def video_to_text(video_url, video_format):
     # Set params for API Call
     transcribe = boto3.client('transcribe')
     job_name = video_url.split("amazonaws.com/")[1]
