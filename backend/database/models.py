@@ -34,4 +34,5 @@ class UserResponse(models.Model):
     transcript = models.TextField(null=True)
     bucket_url = models.TextField(null=True)
     time_completion = models.IntegerField(default=0, null=True)
-
+    facial_emotion = models.TextField(null=True)
+    smile = models.BooleanField(null=True)
