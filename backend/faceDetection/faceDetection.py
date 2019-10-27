@@ -1,4 +1,4 @@
-from VedioDetect import VideoDetect
+from VideoDetect import VideoDetect
 import boto3
 import json
 import sys
@@ -16,16 +16,16 @@ def most_frequent(List):
 
 """
     Function: faceDetection
-    Description:    Process interview vedio, analysing the emotion of user and 
+    Description:    Process interview video, analysing the emotion of user and 
                     whether he or she smiles during the interview
     Arguments:      roleArn: AWS configuration
                     bucketName: Name of teh AWS S3 bucket
-                    vedioName: Name of the interview vedio stored in S3 bucket
+                    videoName: Name of the interview video stored in S3 bucket
             
     Return:         Dict: {emotion, smile}
 """       
-def faceDetection(roleArn, bucketName, vedioName):
-    analyzer=VideoDetect(roleArn, bucketName,vedioName)
+def faceDetection(roleArn, bucketName, videoName):
+    analyzer=VideoDetect(roleArn, bucketName,videoName)
     analyzer.CreateTopicandQueue()
 
     analyzer.StartFaceDetection()
