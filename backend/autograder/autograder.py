@@ -6,23 +6,23 @@ import random
 
 
 """
-    Function: vedio_to_text
-    Arguments: vedio_url: url to the interview vedio
-               vedio_format: format of the interview vedio
-    Description: Transcrip vedio to text
+    Function: video_to_text
+    Arguments: video_url: url to the interview video
+               video_format: format of the interview video
+    Description: Transcrip video to text
      
 """
-def vedio_to_text(vedio_url, vedio_format):
+def video_to_mtext(video_url, video_format):
     # Set params for API Call
     transcribe = boto3.client('transcribe')
-    job_name = vedio_url.split("amazonaws.com/")[1]
-    job_uri = vedio_url
+    job_name = video_url.split("amazonaws.com/")[1]
+    job_uri = video_url
     
     # Start transcription job
     transcribe.start_transcription_job(
         TranscriptionJobName=job_name,
         Media={'MediaFileUri': job_uri},
-        MediaFormat=vedio_format,
+        MediaFormat=video_format,
         LanguageCode='en-US'
     )
     while True:
@@ -57,16 +57,16 @@ def grade_answer(answer, rubric_list):
 
 """
     Function: autograder
-    Arguments: vedio_url: url to the interview vedio
-               vedio_format: format of the interview vedio
+    Arguments: video_url: url to the interview video
+               video_format: format of the interview video
                rubric_list: python list of words that are suppose to be included in the user response
-    Description: This is a wrapper funciton that calls grade_answer and vedio_to_text to evaluate the acuracy
+    Description: This is a wrapper funciton that calls grade_answer and video_to_text to evaluate the acuracy
                  of the user response.
     Returns: Python list: words in rublic_list(keywords for answer) that are missed in user response
      
 """
-def autograder(vedio_url, vedio_format, rubric_list):
-    transcription = vedio_to_text(vedio_url, vedio_format)
+def autograder(video_url, video_format, rubric_list):
+    transcription = video_to_text(video_url, video_format)
     keyword_missed = grade_answer(transcription, rubric_list)
     return keyword_missed
     
