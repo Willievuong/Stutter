@@ -10,7 +10,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
-        fields = ('id', 'title', 'user_id', 'no_question','date_created')
+        fields = ('id', 'title', 'user_id', 'no_question','date_created', 'processed')
         read_only_fields = ['id']
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -23,5 +23,5 @@ class UserResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserResponse
         fields = ('id', 'title', 'session_id', 'user_id', 'question_id', 'transcript', 
-        'bucket_url', 'time_completion', 'facial_emotion', 'smile', 'keywords_missed')
+        'bucket_url', 'time_completion', 'facial_emotion', 'smile', 'keywords_missed', 'processed')
         read_only_fields = ['id']

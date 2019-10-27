@@ -44,6 +44,7 @@ class UserResponse(models.Model):
     facial_emotion = models.TextField(null=True)
     smile = models.BooleanField(null=True)
     keywords_missed = models.TextField(null=True) #Need parsing into a list 
+    processed = models.BooleanField(default=False)
 
     def __str__(self):
         return "{}".format(self)

@@ -204,7 +204,7 @@ def SaveResponse(request, filename, format=None):
     # # Creating writeable video and write the decoding result
     video_result = open(mp4_title, 'rb')
    
-    response = my_bucket.put_object(Key=title, Body=video_result)
+    response = my_bucket.put_object(Key=mp4_title, Body=video_result)
 
     # Concating the URL 
     bucket_name = "stutter"
@@ -214,11 +214,11 @@ def SaveResponse(request, filename, format=None):
     # request.data['bucket_url'] = bucket_url
 
     answer = {
-        "title": title, 
+        "title": mp4_title, 
         "session_id": session_id,
         "user_id": 1,
         "question_id": question_id, 
-        "bucket_url": bucket_url + title
+        "bucket_url": bucket_url + mp4_title
     }
 
     serializer = UserResponseSerializer(data=answer)
@@ -231,16 +231,16 @@ def SaveResponse(request, filename, format=None):
     return Response(serializer.errors, status=status.HTTP_4008_BAD_REQUEST)
 
 @api_view(['POST'])
-def GetSession(request):
+def GetResponse(request):
     '''
         Return all user response with a corresponding session id 
     '''
     
-    serializer = SessionSerializer(data=request.data)
-    
-    
-    if serializer.is_valid():
-        serializer.save()
-    
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    session_id = request.data['session_id']
+    try: 
+        ResponseList = UserResponse.objects.filter(session_id=session_id)
+    except: 
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = UserResponseSerializer(ResponseList, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

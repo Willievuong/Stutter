@@ -14,6 +14,7 @@ urlpatterns = {
     url(r'^response/(?P<pk>[0-9]+)/$', UserResponseDetailsView, name="response_details"),
     url(r'^savesession/$', SaveSession, name="save_session"),
     url(r'^saveresponse/(?P<filename>[^/]+)/$', SaveResponse, name="save_response"),
+    url(r'^getresponse/$', GetResponse, name="get_response"),
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
